@@ -6,12 +6,12 @@ public class TestJDBC {
 
 	JdbcDao dao = new JdbcDao();
 	
-/*	@Test
+	@Test
 	public void insertUser(){
 		User user = new User(3,"stell","f");
 		User user1 = dao.insertUser(user);
 		System.out.println(user1);
-	}*/
+	}
 	
 	@Test
 	public void updateUser(){
@@ -32,5 +32,23 @@ public class TestJDBC {
 	@Test
 	public void getAllUser(){
 		System.out.println(dao.getAllUsers());
+	}
+	
+	@Test
+	public void executeBatch(){
+		BatchTest batch = new BatchTest();
+		batch.exeBatch();
+	}
+	
+	@Test
+	public void rollAble(){
+		RollableTest roll = new RollableTest();
+		roll.rollableResult();
+	}
+	
+	@Test
+	public void updateAble(){
+		UpdateTest update = new UpdateTest();
+		update.update();
 	}
 }

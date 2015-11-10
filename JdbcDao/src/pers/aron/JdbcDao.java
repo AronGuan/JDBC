@@ -13,47 +13,6 @@ import javax.xml.transform.Result;
 
 public class JdbcDao {
 
-	//加载驱动
-	static{
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	//获取连接
-	private Connection getConnection(){
-		try {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/practise", "root", "root");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	//释放资源
-	private void release(ResultSet rs,Statement ps,Connection conn){
-		if(rs != null){
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if(ps!= null){
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if(conn != null){
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	//用Id获取用户对象
 	public User getUserById(long id){
@@ -62,7 +21,7 @@ public class JdbcDao {
 		Connection conn = null;
 		String sql = "select * from user where id = ?";
 		try{
-			conn = getConnection();
+			conn = Utils.getConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
@@ -74,7 +33,7 @@ public class JdbcDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			release(rs, ps, conn);
+			Utils.release(rs, ps, conn);
 		}
 		return null;
 	}
@@ -87,7 +46,7 @@ public class JdbcDao {
 		Connection conn = null;
 		String sql = "select * from user";
 		try{
-			conn = getConnection();
+			conn = Utils.getConnection();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if(rs.next()){
@@ -97,7 +56,7 @@ public class JdbcDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			release(rs, ps, conn);
+			Utils.release(rs, ps, conn);
 		}
 		return list;
 	}
@@ -108,7 +67,7 @@ public class JdbcDao {
 		Connection conn = null;
 		String sql = "update user set name=?,gender=? where id=?";
 		try{
-			conn = getConnection();
+			conn = Utils.getConnection();
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, user.getName());
@@ -127,7 +86,7 @@ public class JdbcDao {
 				e1.printStackTrace();
 			}
 		}finally{
-			release(null, ps, conn);
+			Utils.release(null, ps, conn);
 		}
 		return null;
 	}
@@ -138,7 +97,7 @@ public class JdbcDao {
 		Connection conn = null;
 		String sql = "delete from user where id = ?";
 		try{
-			conn = getConnection();
+			conn = Utils.getConnection();
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(sql);
 			ps.setLong(1, id);
@@ -156,7 +115,7 @@ public class JdbcDao {
 				e1.printStackTrace();
 			}
 		}finally{
-			release(null, ps, conn);
+			Utils.release(null, ps, conn);
 		}
 		return false;
 	}
@@ -167,7 +126,7 @@ public class JdbcDao {
 		Connection conn = null;
 		String sql = "insert into user values(?,?,?)";
 		try{
-			conn = getConnection();
+			conn = Utils.getConnection();
 			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(sql);
 			ps.setLong(1, user.getId());
@@ -186,7 +145,7 @@ public class JdbcDao {
 				e1.printStackTrace();
 			}
 		}finally{
-			release(null, ps, conn);
+			Utils.release(null, ps, conn);
 		}
 		return null;
 	}

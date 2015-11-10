@@ -2,13 +2,11 @@ package pers.aron;
 
 public class User {
 
+	int i = 33;
+	
 	private long id;
 	private String name;
 	private String gender;
-	
-	public User(){
-		
-	}
 
 	public User(long id, String name, String gender) {
 		super();
